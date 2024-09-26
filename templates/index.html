@@ -3,32 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOLO Image Detection</title>
+    <title>Vehicle Object Detection</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>YOLOv8 Vehicle Object Detection</h1>
-        <form id="upload-form" method="POST" enctype="multipart/form-data">
-            <input type="file" name="image" accept="image/*" required>
-            <button type="submit">Upload and Detect</button>
-            <h2> Please select a photo that you would like to upload!</h2>
-        </form>
-
-        
-
-        {% if image_path %}
+        <h1>Vehicle Type Object Detection</h1>
+        <h4 class="author">Built by Chris Heimbuch using Flask, Pytorch, and YOLO v8</h4>
+        {% if not image_path %}
+            <form id="upload-form" method="POST" enctype="multipart/form-data">
+                <div class="button-container">
+                    <input type="file" name="image" accept="image/*" required>
+                    <button type="submit">Upload and Detect</button>
+                </div>
+                <h2 class="upload-instruction">Please click on "Choose File" and select an image with vehicles you would like to upload!</h2>
+            </form>
+        {% else %}
         <div class="image-container">
             <img src="{{ image_path }}" alt="Processed Image">
             <div class="accuracy">
-                <h3>Confidence Scores:</h3>
-                <ul>
-                    {% for accuracy in accuracies %}
-                    <li>{{ accuracy }}%</li>
+                <h3>Classifications and Confidence Scores:</h3>
+                <ul style="list-style-type:none;">
+                    {% for classification in classifications %}
+                    <li>{{ classification.class }}: {{ classification.confidence }}%</li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
+            <!-- Re-upload Button -->
+            <div class="reupload-container">
+                <a href="{{ url_for('reupload') }}">
+                    <button type="button">Click here to re-upload an image</button>
+                </a>
+            </div>
         {% endif %}
     </div>
 </body>

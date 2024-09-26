@@ -1,4 +1,4 @@
-/* styles.css */
+/* Updated styles.css */
 
 body {
     font-family: Arial, sans-serif;
@@ -10,12 +10,21 @@ body {
 h1 {
     text-align: center;
     color: #333;
+    font-size: 36px;
+    text-decoration: underline;
 }
 
 h2 {
     text-align: center;
     color: #1f1f1f;
-    font-size: 8;
+    font-size: 14px;
+}
+
+h4 {
+    text-align: center;
+    color: #1f1f1f;
+    font-size: 14px;
+    margin-top: -20px;
 }
 
 .container {
@@ -32,7 +41,17 @@ h2 {
 }
 
 input[type="file"] {
-    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Centers the buttons horizontally */
+    align-items: center; /* Aligns items on the same line */
+    gap: 10px; /* Adjusts the space between the file input and button */
+    margin-top: 20px;
 }
 
 button {
@@ -60,8 +79,31 @@ img {
     border-radius: 8px;
 }
 
-.accuracy {
-    font-size: 18px;
-    color: #333;
-    margin: 10px 0;
+.reupload-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.reupload-container button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #5cb85c;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.reupload-container button:hover {
+    background-color: #4cae4c;
+}
+
+.upload-instruction {
+    font-size: 14px; /* Adjust size as needed */
+}
+
+.accuracy ul {
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
 }
