@@ -2,7 +2,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #d9d5c4;
     margin: 0;
     padding: 20px;
 }
@@ -10,7 +10,7 @@ body {
 h1 {
     text-align: center;
     color: #333;
-    font-size: 36px;
+    font-size: 40px;
     text-decoration: underline;
 }
 
