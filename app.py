@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, Response
+from flask import Flask, render_template, request, redirect, url_for, Response, make_response, stream_with_context
 import cv2  # OpenCV to process images
 import numpy as np
 from ultralytics import YOLO
+import time
+import os 
 
 app = Flask(__name__)
 
@@ -25,9 +27,9 @@ def gen_frames():
         results = yolo_model.predict(source=frame, save=False)
         
         for result in results:
-            boxes = result.boxes.xyxy  # Bounding box coordinates
-            labels = result.boxes.cls  # Class labels (indices)
-            confidences = result.boxes.conf  # Confidence scores
+            boxes = result.boxes.xyxy  #Bounding box coordinates
+            labels = result.boxes.cls  # lass labels
+            confidences = result.boxes.conf  #Confidence scores
             
             for box, label, confidence in zip(boxes, labels, confidences):
                 # Get the class name based on the label index
@@ -46,7 +48,7 @@ def gen_frames():
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # Concatenate frame bytes
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  
 
     cap.release()
 
@@ -55,24 +57,34 @@ def webcam_feed():
     """Route to start the webcam feed and display it."""
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 @app.route('/video_detection', methods=['POST'])
 def video_detection():
     file = request.files['video']  # Get the uploaded video
     video_path = 'static/uploaded_video.mp4'
-    
+    processed_video_path = 'static/processed_video.mp4'
+
+    # Check if the processed video exists and delete it
+    if os.path.exists(processed_video_path):
+        os.remove(processed_video_path)
+
     # Save the uploaded video to disk
     file.save(video_path)
 
     # Open the video with OpenCV
     cap = cv2.VideoCapture(video_path)
-    
+
+    # Define the codec and create a VideoWriter object to save the output video as MP4
+    fourcc = cv2.VideoWriter_fourcc(*'H264')
+    out = cv2.VideoWriter(processed_video_path, fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))
+
     while cap.isOpened():
         success, frame = cap.read()
         if not success:
             break
         
         # Process the frame with YOLO model
-        results = yolo_model.predict(source=frame, save=False)
+        results = yolo_model.predict(source=frame, save=False, device='cuda')
         
         for result in results:
             boxes = result.boxes.xyxy  # Bounding box coordinates
@@ -88,17 +100,19 @@ def video_detection():
                 cv2.putText(frame, f"{class_name} ({confidence:.2f})", 
                             (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
 
-        # Save or process the frames here (e.g., for displaying results)
-        
-    cap.release()
+        # Write the processed frame to the output video
+        out.write(frame)
 
-    # Return the video feed or redirect to a results page
-    return render_template('index.html', video_path=video_path)  # You can adjust this as per your layout
+    cap.release()
+    out.release()
+
+    # Pass only the filename to the template, not the full path
+    return render_template('index.html', video_path='processed_video.mp4')
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_and_process():
     if request.method == 'POST':
-        file = request.files['image']  # Get the uploaded image
+        file = request.files['image']  
         image = cv2.imdecode(np.frombuffer(file.read(), np.uint8), cv2.IMREAD_COLOR)
         
         # Process the image with YOLO model
@@ -130,7 +144,7 @@ def upload_and_process():
                 
                 # Draw larger class name and confidence score (font scale = 1.2, thickness = 3)
                 cv2.putText(image, f"{class_name} ({confidence:.2f})", 
-                            (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 255), 3)  # Set text color to red and larger font
+                            (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 255), 3) 
         
         # Resize the image to make it larger (e.g., 1.5x the original size)
         image = cv2.resize(image, (int(image.shape[1] * 1.5), int(image.shape[0] * 1.5)))
