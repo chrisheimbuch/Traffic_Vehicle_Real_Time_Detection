@@ -6,8 +6,8 @@
     <title>Vehicle Object Detection</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <style>
-        /* Center video display and download button */
-        .video-container {
+        /* Center video display, image display, and download button */
+        .video-container, .image-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -82,6 +82,13 @@
                         {% endfor %}
                     </ul>
                 </div>
+
+                <!-- Download the processed image -->
+                <div class="download-link">
+                    <a href="{{ url_for('static', filename='processed_image.jpg') }}" download="processed_image.jpg">
+                        <button>Download Processed Image</button>
+                    </a>
+                </div>
             </div>
 
             <!-- Re-upload Button -->
@@ -105,7 +112,7 @@
                 <!-- Download the processed video -->
                 <div class="download-link">
                     <a href="{{ url_for('static', filename=video_path) }}" download="processed_video.mp4">
-                        Download Processed Video
+                        <button>Download Processed Video</button>
                     </a>
                 </div>
             </div>

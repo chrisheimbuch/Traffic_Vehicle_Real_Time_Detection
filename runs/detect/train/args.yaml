@@ -2,7 +2,7 @@ task: detect
 mode: train
 model: yolov8n.pt
 data: C:\Users\chris\Desktop\capstone project\Traffic_Vehicle_Real_Time_Detection\data.yaml
-epochs: 300
+epochs: 500
 time: null
 patience: 100
 batch: 16
