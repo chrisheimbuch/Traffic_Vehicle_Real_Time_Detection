@@ -1,4 +1,4 @@
-﻿# Traffic_Vehicle_Real_Time_Detection - YOLO v8 Capstone Project
+﻿# Vehicle Real Time Detection - YOLO v8 Capstone Project
 
  ![alt text]([https://github.com/[chrisheimbuch]/[Traffic_Vehicle_Real_Time_Detection]/blob/[main]/image.jpg?raw=true](https://github.com/chrisheimbuch/Traffic_Vehicle_Real_Time_Detection/blob/main/source/images/yolov8.jpg))
 
