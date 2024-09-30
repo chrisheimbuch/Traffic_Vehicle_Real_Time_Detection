@@ -1,6 +1,6 @@
 ﻿# Vehicle Real Time Detection - YOLO v8 Capstone Project
 
-- **[Documents](./documents):** includes PDF documents of slides used in class presentation and of the website
+- **[Documents](./documents):** includes PDF documents of slides used in class presentation and of the application/website
 
 - **[Source](./source):** includes source code for the entire project
 
@@ -8,6 +8,9 @@ This is a Phase 5 Capstone Project for Flatiron School's Datascience Bootcamp. I
 
 ### How to Use
 
+<img width="1262" alt="websiteHomePage" src="https://github.com/user-attachments/assets/35abb5d6-6078-4958-a138-4b16317dcb59">
+
+Once you are at the homepage, you can either select to upload an image of a vehicle, upload a video, or use your webcam for real time detection. Select the image you want to detect and click on upload image and detect.
 
 
 
