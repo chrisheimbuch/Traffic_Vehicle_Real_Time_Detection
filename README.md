@@ -1,8 +1,5 @@
 ﻿# Vehicle Real Time Detection - YOLO v8 Capstone Project
 
- ![yolov8](https://github.com/user-attachments/assets/eb106610-5e10-470a-b004-a690dbf4ed0b)
-
-
 - **[Documents](./documents):** includes PDF documents of slides used in class presentation and of the application/website
 
 - **[Source](./source):** includes source code for the entire project
