@@ -10,7 +10,7 @@ import os
 app = Flask(__name__)
 
 #YOLO model
-yolo_model = YOLO(r"C:\Users\chris\Desktop\capstone project\Traffic_Vehicle_Real_Time_Detection\runs\detect\train\weights\best.pt")
+yolo_model = YOLO(r"C:\Users\chris\Desktop\capstone project\Traffic_Vehicle_Real_Time_Detection\source\runs\detect\train\weights\best.pt")
 
 #List of class names corresponding to my YOLO model
 class_names = ['bus', 'car', 'motorbike', 'threewheel', 'truck', 'van']  # Update to match your model
