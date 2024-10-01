@@ -9,15 +9,18 @@ import os
 #Initialize flask
 app = Flask(__name__)
 
-#YOLO model
-yolo_model = YOLO(r"C:\Users\chris\Desktop\capstone project\Traffic_Vehicle_Real_Time_Detection\source\runs\detect\train\weights\best.pt")
+#Note: Update this path to where ever the best.pt file is saved on your computer directory.
+model_path = r"C:\Users\chris\Desktop\capstone project\Traffic_Vehicle_Real_Time_Detection\source\runs\detect\train\weights\best.pt"
+
+#YOLO model instance
+yolo_model = YOLO(model_path)
 
 #List of class names corresponding to my YOLO model
-class_names = ['bus', 'car', 'motorbike', 'threewheel', 'truck', 'van']  # Update to match your model
+class_names = ['bus', 'car', 'motorbike', 'threewheel', 'truck', 'van']
 
 #Function to process frames and return them with YOLO detection results
 def gen_frames():
-    # Open the webcam (use 0 for the default webcam or change it if you have multiple cameras)
+    #Open the webcam 
     cap = cv2.VideoCapture(0)
     
     while True:
@@ -60,24 +63,24 @@ def webcam_feed():
     """Route to start the webcam feed and display it."""
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
+#Route for videos
 @app.route('/video_detection', methods=['POST'])
 def video_detection():
     file = request.files['video']  # Get the uploaded video
     video_path = 'static/uploaded_video.mp4'
     processed_video_path = 'static/processed_video.mp4'
 
-    # Check if the processed video exists and delete it
+    #Check if the processed video exists and delete it
     if os.path.exists(processed_video_path):
         os.remove(processed_video_path)
 
-    # Save the uploaded video to disk
+    #Save the uploaded video to disk
     file.save(video_path)
 
-    # Open the video with OpenCV
+    #Open the video with OpenCV
     cap = cv2.VideoCapture(video_path)
 
-    # Define the codec and create a VideoWriter object to save the output video as MP4
+    #Define the codec and create a VideoWriter object to save the output video as MP4
     fourcc = cv2.VideoWriter_fourcc(*'H264')
     out = cv2.VideoWriter(processed_video_path, fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))
 
@@ -86,13 +89,13 @@ def video_detection():
         if not success:
             break
         
-        # Process the frame with YOLO model
+        #Process the frame with YOLO model
         results = yolo_model.predict(source=frame, save=False, device='cuda')
         
         for result in results:
-            boxes = result.boxes.xyxy  # Bounding box coordinates
-            labels = result.boxes.cls  # Class labels (indices)
-            confidences = result.boxes.conf  # Confidence scores
+            boxes = result.boxes.xyxy  #Bounding box coordinates
+            labels = result.boxes.cls  #Class labels (indices)
+            confidences = result.boxes.conf  #Confidence scores
             
             for box, label, confidence in zip(boxes, labels, confidences):
                 class_name = class_names[int(label)] if int(label) < len(class_names) else f"Class {int(label)}"
@@ -109,9 +112,10 @@ def video_detection():
     cap.release()
     out.release()
 
-    # Pass only the filename to the template, not the full path
+    #Pass only the filename to the template, not the full path
     return render_template('index.html', video_path='processed_video.mp4')
 
+#upload and process methods for images
 @app.route('/', methods=['GET', 'POST'])
 def upload_and_process():
     if request.method == 'POST':
@@ -126,9 +130,9 @@ def upload_and_process():
         
         #Draw the bounding boxes and labels on the image
         for result in results:
-            boxes = result.boxes.xyxy  # Bounding box coordinates
-            labels = result.boxes.cls  # Class labels (indices)
-            confidences = result.boxes.conf  # Confidence scores
+            boxes = result.boxes.xyxy  #Bounding box coordinates
+            labels = result.boxes.cls  #Class labels (indices)
+            confidences = result.boxes.conf  #Confidence scores
             
             for box, label, confidence in zip(boxes, labels, confidences):
                 #Get the class name based on the label index
@@ -137,15 +141,15 @@ def upload_and_process():
                 #Append both the class name and confidence score to the list
                 classifications.append({
                     'class': class_name.title(),
-                    'confidence': round(float(confidence) * 100)  # Convert to percentage and round to whole number
+                    'confidence': round(float(confidence) * 100)  #Convert to percentage and round to whole number
                 })
                 
                 x1, y1, x2, y2 = map(int, box)
                 
-                # Draw bounding box with thicker lines (thickness = 3)
+                #Draw bounding box with thicker lines (thickness = 3)
                 cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 10)
                 
-                # Draw larger class name and confidence score (font scale = 1.2, thickness = 3)
+                #Draw larger class name and confidence score (font scale = 1.2, thickness = 3)
                 cv2.putText(image, f"{class_name} ({confidence:.2f})", 
                             (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 255), 3)
         
@@ -162,7 +166,7 @@ def upload_and_process():
     #Default GET request just renders the page for upload
     return render_template('index.html')
 
-# Add a route to handle re-uploading
+#Add a route to handle re-uploading
 @app.route('/reupload')
 def reupload():
     return redirect(url_for('upload_and_process'))
