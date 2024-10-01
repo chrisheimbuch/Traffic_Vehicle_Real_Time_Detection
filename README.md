@@ -26,4 +26,9 @@ For videos, in the example above, once the object detection has been performed, 
 
 ## **Real Time Detection**
 
-For real time detection, make sure you have a webcam configured. All the user needs to do is click on the last button on the home page and make sure the camera is pointed at a vehicle or vehicles.
+For real time detection, make sure you have a webcam configured. All the user needs to do is click on the last button shown below on the home page.
+
+![image](https://github.com/user-attachments/assets/693e6bbb-b9d7-4886-8bb3-fcbe3a1ea9e3)
+
+![image](https://github.com/user-attachments/assets/37658929-f9ee-47f9-b108-789aebe85ace)
+
