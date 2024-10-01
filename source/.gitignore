@@ -8,7 +8,7 @@ meta.json
 *.avi
 
 # Ignore all __pycache__ folders
-/pycache/*
+__pycache__/
 
 # Ignore all .cache files
 *.cache
