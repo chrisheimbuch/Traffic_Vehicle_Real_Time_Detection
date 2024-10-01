@@ -6,3 +6,9 @@ meta.json
 
 # Ignore all .avi files
 *.avi
+
+# Ignore all __pycache__ folders
+/pycache/*
+
+# Ignore all .cache files
+*.cache
