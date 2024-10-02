@@ -20,7 +20,7 @@ For images, in the example above, once the object detection has been performed, 
 
 ## **Videos**
 
-![image](https://github.com/user-attachments/assets/3ff7a7d8-ccce-478c-b8b0-a9dbec20f85e)
+![gif video](https://github.com/user-attachments/assets/fb0fb0b0-de8b-4a46-b644-faa04eaafd27)
 
 For videos, in the example above, once the object detection has been performed, it will include bounding boxes and classifications and accuracy percentage scored for whatever class is detected in the video. The user will have the option to download the video that was processed if desired, or return to the home page to test another image or video.
 
