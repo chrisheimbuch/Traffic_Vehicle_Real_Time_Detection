@@ -14,7 +14,7 @@ Once you are at the homepage of the website, users have the option to either sel
 
 ## **Images**
 
-![image](https://github.com/user-attachments/assets/682670c1-7490-4174-ab41-e833f9df5a6c)
+![gif images](https://github.com/user-attachments/assets/b7d5b311-f8c5-4e50-846e-877a038f2906)
 
 For images, in the example above, once the object detection has been performed, it will include a bounding box and classification as well as a percentage of accuracy the model is sure of what type of class it is. Additionally, the classes and accuracy percentages will be displayed at the bottom of the web page below the image. The user will have the option to either download the image that was identified with a particular vehicle class or returning to the home page to test another image or video. 
 
